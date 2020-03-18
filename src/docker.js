@@ -1,6 +1,7 @@
 const cp = require('child_process');
 const core = require('@actions/core');
 const fs = require('fs');
+const path = require('path');
 const { context } = require('@actions/github');
 const maxBufferSize = require('../src/settings');
 
@@ -50,7 +51,10 @@ const createTag = () => {
 };
 
 const build = (imageName, buildArgs) => {
-  const dockerfile = core.getInput('dockerfile');
+  let dockerfile = core.getInput('dockerfile');
+  if (dockerfile.length === 0) {
+    dockerfile = path.join(path.dirname(fs.realpathSync(__filename)), '../assets/Dockerfile');
+  }
 
   if (!fs.existsSync(dockerfile)) {
     core.setFailed(`Dockerfile does not exist in location ${dockerfile}`);

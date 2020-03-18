@@ -1,4 +1,6 @@
 const core = require('@actions/core');
+const cp = require('child_process');
+const path = require('path');
 const docker = require('./docker');
 
 // Convert buildArgs from String to Array, as GH Actions currently does not support Arrays
@@ -11,6 +13,13 @@ const processBuildArgsInput = buildArgsInput => {
   return buildArgs;
 };
 
+const gomodules = () => {
+  core.info(`Running go mod download ...`);
+  cp.execSync(`go mod download`, {
+    env: { GOPATH: path.join(process.cwd(), '_local') }
+  });
+};
+
 const run = () => {
   try {
     // Get GitHub Action inputs
@@ -21,6 +30,7 @@ const run = () => {
 
     const imageName = `${registry}/${image}:${tag}`;
 
+    gomodules();
     docker.login();
     docker.build(imageName, buildArgs);
     docker.push(imageName);
