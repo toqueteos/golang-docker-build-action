@@ -1597,6 +1597,16 @@ const processBuildArgsInput = buildArgsInput => {
   return buildArgs;
 };
 
+const gitcredentials = () => {
+  const username = core.getInput('username');
+  const password = core.getInput('password');
+
+  core.info(`Setting up git credentials for user ${username} ...`);
+  cp.execSync(
+    `git config --global credential.helper '!f() { sleep 1; echo "username=${username}"; echo "password=${password}"; }; f'`
+  );
+};
+
 const gomodules = () => {
   core.info(`Running go mod download ...`);
   cp.execSync(`go mod download`, {
@@ -1617,6 +1627,7 @@ const run = () => {
 
     const imageName = `${registry}/${image}:${tag}`;
 
+    gitcredentials();
     gomodules();
     docker.login();
     docker.build(imageName, buildArgs);
