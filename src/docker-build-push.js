@@ -30,7 +30,7 @@ const gomodules = () => {
   penv.GOPATH = path.join(process.cwd(), '_local');
   penv.GOCACHE = '/tmp/';
 
-  cp.execSync(`go mod download`, penv);
+  cp.execSync(`go mod download`);
 };
 
 const run = () => {
