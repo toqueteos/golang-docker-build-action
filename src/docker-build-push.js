@@ -16,7 +16,10 @@ const processBuildArgsInput = buildArgsInput => {
 const gomodules = () => {
   core.info(`Running go mod download ...`);
   cp.execSync(`go mod download`, {
-    env: { GOPATH: path.join(process.cwd(), '_local') }
+    env: {
+      GOPATH: path.join(process.cwd(), '_local'),
+      GOCACHE: '/tmp/'
+    }
   });
 };
 
