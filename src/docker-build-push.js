@@ -25,12 +25,12 @@ const gitcredentials = () => {
 
 const gomodules = () => {
   core.info(`Running go mod download ...`);
-  cp.execSync(`go mod download`, {
-    env: {
-      GOPATH: path.join(process.cwd(), '_local'),
-      GOCACHE: '/tmp/'
-    }
-  });
+
+  const penv = process.env;
+  penv.GOPATH = path.join(process.cwd(), '_local');
+  penv.GOCACHE = '/tmp/';
+
+  cp.execSync(`go mod download`, penv);
 };
 
 const run = () => {
