@@ -5,16 +5,29 @@ ENV GOPATH /build/_local
 ENV GO111MODULE=on
 ENV GOPROXY="https://proxy.golang.org"
 
+ARG packages
+RUN if [ -n "$packages" ]; then \
+      DEBIAN_FRONTEND=noninteractive \
+      apt-get update && \
+      apt-get install -y --no-install-recommends ${packages} && \
+      apt-get clean && \
+      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
+    fi
+
 WORKDIR /build
 COPY . .
-RUN go install -v ./...
+
+ARG tags
+RUN go install -tags "${tags}" ./...
 
 RUN ls /build/_local/bin
 
 FROM debian:buster-slim  
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates && \
+ARG packages
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates ${packages} && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
