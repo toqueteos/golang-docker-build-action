@@ -18,6 +18,8 @@ WORKDIR /build
 COPY . .
 
 ARG tags
+ARG goprivate
+ENV GOPRIVATE="${goprivate}"
 RUN go install -tags "${tags}" ./...
 
 RUN ls /build/_local/bin
