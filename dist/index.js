@@ -589,7 +589,7 @@ const build = (imageName, buildArgs) => {
   }
 
   core.info(`Building Docker image: ${imageName}`);
-  cp.execSync(createBuildCommand(dockerfile, imageName, buildArgs), { maxBuffer: maxBufferSize });
+  cp.execSync(createBuildCommand(dockerfile, imageName, buildArgs), { maxBuffer: maxBufferSize, stdio: 'inherit' });
 };
 
 const isEcr = registry => registry && registry.includes('amazonaws');
@@ -616,7 +616,7 @@ const login = () => {
 
 const push = imageName => {
   core.info(`Pushing Docker image ${imageName}`);
-  cp.execSync(`docker push ${imageName}`);
+  cp.execSync(`docker push ${imageName}`, { stdio: 'inherit' });
 };
 
 module.exports = {
