@@ -1,5 +1,5 @@
 
-FROM golang:1.14.0 AS builder
+FROM golang:1 AS builder
 
 ENV GOPATH /build/_local
 ENV GO111MODULE=on
