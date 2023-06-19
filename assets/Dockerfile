@@ -24,6 +24,7 @@ RUN go install -tags "${tags}" ./...
 
 RUN ls /build/_local/bin
 
+ARG debian_version
 ARG DEBIAN_VERSION="${debian_version:-buster-slim}"
 
 FROM debian:${DEBIAN_VERSION}
