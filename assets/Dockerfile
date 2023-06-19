@@ -1,4 +1,5 @@
 
+ARG debian_version=buster-slim
 FROM golang:1 AS builder
 
 ENV GOPATH /build/_local
@@ -24,7 +25,6 @@ RUN go install -tags "${tags}" ./...
 
 RUN ls /build/_local/bin
 
-ARG debian_version=buster-slim
 FROM debian:${debian_version}
 
 ARG packages
