@@ -1,5 +1,5 @@
 
-ARG debian_version=bookwork-slim
+ARG debian_version=bookworm-slim
 FROM golang:1 AS builder
 
 ENV GOPATH /build/_local
